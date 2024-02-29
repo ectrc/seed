@@ -5,11 +5,8 @@ import router from "src/app/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
-import TauriFrame from "src/components/frame";
-import { Toaster } from "react-hot-toast";
-
 import "src/styles/app.css";
-import "src/styles/default.css";
+import "src/styles/defaults.css";
 
 const App = () => {
   const handleContextMenu = (e: Event) => e.preventDefault();
@@ -21,14 +18,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TauriFrame>
-        <Toaster
-          toastOptions={{
-            className: "snowToast",
-          }}
-        />
-        <RouterProvider router={router} />
-      </TauriFrame>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 };

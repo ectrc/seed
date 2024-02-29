@@ -124,3 +124,9 @@ type LibraryEntry = {
   binaryHash: string;
   path: string;
 };
+
+type LauncherStats = {
+  PlayersOnline: number;
+  CurrentBuild: string;
+  CurrentSeason: number;
+};

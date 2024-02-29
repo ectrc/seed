@@ -1,3 +1,4 @@
+import { queryClient } from "src/app/app";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -12,7 +13,10 @@ export const useUserControl = create<UserControlState>()(
     (set) => ({
       access_token: "",
       new_token: async (access_token) => set({ access_token }),
-      kill_token: () => set({ access_token: "" }),
+      kill_token: () => {
+        set({ access_token: "" });
+        queryClient.setQueryData(["player"], null);
+      },
     }),
     {
       name: "user.control",

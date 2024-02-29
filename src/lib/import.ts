@@ -2,7 +2,7 @@ import { open } from "@tauri-apps/api/dialog";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { useLibraryControl } from "src/state/library";
 import { fileExists, hashFile } from "src/lib/tauri";
-import toast from "react-hot-toast";
+import { LOADING_STATES, useConfigControl } from "src/state/config";
 
 const versionLookup = new Map<string, string>([
   ["7e9ca42b2f4691fe40ab64ed79cd6ae00a3ac0edd2ed909371b00f0e6048202f", "1.7.1"],
@@ -23,18 +23,27 @@ const versionLookup = new Map<string, string>([
   ["f0ea139dd7be93da7a36f5f91bcea9f84f914709e9cc3253726736f8d7b21133", "15.30"],
 ]);
 
+const setLoader = (loading: boolean) =>
+  useConfigControl
+    .getState()
+    .set_loader(
+      "importing",
+      loading ? LOADING_STATES.LOADING : LOADING_STATES.AWAITING_ACTION
+    );
+
 export const importBuildFromDialog = async () => {
+  setLoader(true);
   const selectedPath = await open({ directory: true, multiple: true });
-  if (!selectedPath) return;
+  if (!selectedPath) return setLoader(false);
 
   if (Array.isArray(selectedPath)) {
     for (const path of selectedPath) {
       await importBuild(path);
     }
-    return;
+    return setLoader(false);
   }
 
-  await importBuild(selectedPath);
+  importBuild(selectedPath).then(() => setLoader(false));
 };
 
 const importBuild = async (path: string) => {
@@ -51,8 +60,7 @@ const importBuild = async (path: string) => {
   const version = versionLookup.get(hash);
   if (!version) return;
 
-  if (version != "8.51")
-    return toast("Snow Multiplayer is only available for Fortnite 8.51");
+  if (version != "8.51") return;
 
   libraryControl.add({
     title: version ? `Fortnite ${version}` : "Unknown",

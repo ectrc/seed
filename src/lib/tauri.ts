@@ -11,9 +11,13 @@ export const fileExists = async (i: string) => {
 };
 
 export const experienceSnow = async (i: string, c: string) => {
-  console.log(i, c);
   const result = await invoke<boolean>("experience", { i, c }).catch(
     (s) => s as string
   );
+  return result;
+};
+
+export const closeSnow = async () => {
+  const result = await invoke<boolean>("kill").catch((s) => s as string);
   return result;
 };

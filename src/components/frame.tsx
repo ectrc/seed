@@ -1,47 +1,94 @@
-import { appWindow } from "@tauri-apps/api/window";
+import { Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useConfigControl } from "src/state/config";
+import { queryPerson, queryStats } from "src/external/query";
 
-import { HiX, HiMinusSm } from "react-icons/hi";
-import { FaSeedling } from "react-icons/fa6";
+import { HiArrowSmLeft } from "react-icons/hi";
+import { FaSeedling, FaCircleUser } from "react-icons/fa6";
 import "src/styles/frame.css";
 
-type TauriFrameProps = {
-  children?: React.ReactNode;
-};
+const Frame = () => {
+  const fortniteStatus = useConfigControl((s) => s.loaders["launching"]);
+  const className = `tauriFrame ${fortniteStatus}`;
 
-const TauriFrame = (props: TauriFrameProps) => {
-  const isTauri = !!window.__TAURI__;
-  const render = isTauri ? <Frame {...props} /> : props.children;
-  return <div className="tauriFrameContainer">{render}</div>;
-};
+  const { data: launcherStats, error } = useQuery<LauncherStats>({
+    queryKey: ["launcher"],
+    queryFn: queryStats,
+    initialData: {
+      PlayersOnline: 0,
+      CurrentBuild: "0.0",
+      CurrentSeason: 0,
+    },
+    throwOnError: false,
+    refetchInterval: 10000,
+  });
 
-type FrameProps = {
-  children?: React.ReactNode;
-};
+  const { data: player } = useQuery({
+    queryKey: ["player"],
+    queryFn: queryPerson,
+  });
 
-const Frame = (props: FrameProps) => {
   return (
-    <>
-      <nav data-tauri-drag-region className="tauriFrame">
-        <span data-tauri-drag-region className="tauriFrameIcon">
-          <FaSeedling />
-        </span>
-        {/* <span data-tauri-drag-region className="tauriFrameText">
-          seed
-        </span> */}
-        <s />
-        <button
-          className="tauriFrameAction"
-          onClick={() => appWindow.minimize()}
-        >
-          <HiMinusSm />
-        </button>
-        <button className="tauriFrameAction" onClick={() => appWindow.close()}>
-          <HiX />
-        </button>
+    <div className="tauriFrameContainer">
+      <nav data-tauri-drag-region className={className}>
+        <div data-tauri-drag-region className="tauriFrameInner">
+          <span data-tauri-drag-region className="tauriFrameIcon">
+            <FaSeedling />
+          </span>
+          <s />
+          <MainLink playerExists={!!player} />
+        </div>
+        <div data-tauri-drag-region className="tauriFrameInformation">
+          <span data-tauri-drag-region>
+            {!error ? launcherStats.PlayersOnline : 0} Players Online
+          </span>
+          <s></s>
+          <span data-tauri-drag-region>
+            <strong data-tauri-drag-region>
+              {player ? player.DisplayName : ""}
+            </strong>
+          </span>
+        </div>
       </nav>
-      <div className="tauriFrameContent">{props.children}</div>
-    </>
+      <div className="tauriFrameContent">
+        <Outlet />
+      </div>
+    </div>
   );
 };
 
-export default TauriFrame;
+type MainLinkProps = {
+  playerExists: boolean;
+};
+
+const MainLink = (props: MainLinkProps) => {
+  const router = useRouterState();
+  if (!props.playerExists) return null;
+  if (router.location.pathname === "/snow/account") {
+    return <HomeLink />;
+  }
+
+  return <AccountLink />;
+};
+
+const AccountLink = () => {
+  return (
+    <Link to="/snow/account">
+      <button className="tauriFrameAction">
+        <FaCircleUser />
+      </button>
+    </Link>
+  );
+};
+
+const HomeLink = () => {
+  return (
+    <Link to="/snow">
+      <button className="tauriFrameAction">
+        <HiArrowSmLeft />
+      </button>
+    </Link>
+  );
+};
+
+export default Frame;

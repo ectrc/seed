@@ -1,38 +1,36 @@
+import { Suspense } from "react";
 import {
   createRootRoute,
   createRoute,
   createRouter,
   Navigate,
-  Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 import { useUserControl } from "src/state/user";
-import client from "src/external/client";
 
-import MovingBlobs from "src/components/blobs";
-import SnowPage from "src/pages/snow";
-import ConnectionsPage from "src/pages/connections";
+import Overview from "src/pages/overview";
 import CredentialsPage from "src/pages/credentials";
-import PreferencesPage from "src/pages/preferences";
-import PackagesPage from "src/pages/packages";
+import Account from "src/pages/account";
+import Frame from "src/components/frame";
+import Snow from "src/pages/snow";
 
 export const rootRoute = createRootRoute({
-  component: () => <Outlet />,
+  component: () => (
+    <Suspense fallback="Failed, contact @ectrc.">
+      <Frame />
+    </Suspense>
+  ),
   notFoundComponent: () => <Navigate to="/credentials" />,
 });
 
 export const credentialsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/credentials",
-  component: () => (
-    <>
-      <MovingBlobs />
-      <CredentialsPage />
-    </>
-  ),
+  component: () => <CredentialsPage />,
   beforeLoad: () => {
     const token = useUserControl.getState().access_token;
-    if (!token) return;
+    if (!token) return appWindow.setSize(new LogicalSize(320, 154));
 
     throw redirect({
       to: "/snow",
@@ -43,50 +41,27 @@ export const credentialsRoute = createRoute({
 export const snowRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/snow",
-  component: SnowPage,
-  beforeLoad: async () => {
-    const token = useUserControl.getState().access_token;
-    const response = await client.okay(token);
-    if (response.ok) return;
-    useUserControl.getState().kill_token();
-    throw redirect({
-      to: "/credentials",
-    });
+  component: Snow,
+  beforeLoad: () => {
+    appWindow.setSize(new LogicalSize(320, 530));
   },
 });
 
 export const snowIndexRoute = createRoute({
   getParentRoute: () => snowRoute,
   path: "/",
-  component: () => <Navigate to="/snow/packages" />,
+  component: Overview,
 });
 
-export const snowLibraryRoute = createRoute({
+export const snowAccountRoute = createRoute({
   getParentRoute: () => snowRoute,
-  path: "/packages",
-  component: PackagesPage,
-});
-
-export const snowSettingsRoute = createRoute({
-  getParentRoute: () => snowRoute,
-  path: "/preferences",
-  component: PreferencesPage,
-});
-
-export const snowConnectionsRoute = createRoute({
-  getParentRoute: () => snowRoute,
-  path: "/connections",
-  component: ConnectionsPage,
+  path: "/account",
+  component: Account,
 });
 
 const tree = rootRoute.addChildren([
   credentialsRoute,
-  snowRoute.addChildren([
-    snowIndexRoute,
-    snowLibraryRoute,
-    snowSettingsRoute,
-    snowConnectionsRoute,
-  ]),
+  snowRoute.addChildren([snowIndexRoute, snowAccountRoute]),
 ]);
 
 const router = createRouter({

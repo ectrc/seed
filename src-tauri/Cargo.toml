@@ -1,7 +1,7 @@
 [package]
 name = "seed"
 version = "0.0.0"
-description = "Seed Launcher"
+description = "Seed"
 authors = ["ectrc"]
 edition = "2021"
 

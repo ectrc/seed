@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "seed",
+    "productName": "Seed",
     "version": "1.0.0"
   },
   "tauri": {
@@ -21,13 +21,12 @@
       {
         "fullscreen": false,
         "maximizable": false,
-        "resizable": true,
+        "resizable": false,
         "title": "Seed",
-        "minWidth": 850,
-        "width": 950,
-        "minHeight": 500,
-        "height": 600,
-        "decorations": false
+        "width": 320,
+        "height": 154,
+        "decorations": false,
+        "center": true
       }
     ],
     "security": {

@@ -54,6 +54,11 @@ async fn experience(i: String, c: &str) -> Result<bool, String> {
   }
 }
 
+#[tauri::command]
+async fn kill() {
+  carter::kill();
+}
+
 fn main() {
   tauri_plugin_deep_link::prepare("rocks.snow");
   tauri::Builder::default()
@@ -83,7 +88,7 @@ fn main() {
 
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![hash, exists, experience])
+    .invoke_handler(tauri::generate_handler![hash, exists, experience, kill])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

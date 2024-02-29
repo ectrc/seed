@@ -1,26 +1,32 @@
-import { Outlet } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { Suspense, useEffect } from "react";
+import { Outlet, useNavigate } from "@tanstack/react-router";
+import { useUserControl } from "src/state/user";
+import client from "src/external/client";
 
-import SnowDrawer from "src/components/drawer";
-import "src/styles/pageSnow.css";
+const Snow = () => {
+  const navigate = useNavigate();
+  const user = useUserControl();
 
-const SnowPage = () => {
+  useEffect(() => {
+    const asyncMethod = async () => {
+      const response = await client.okay(user.access_token);
+      if (response.ok) return;
+      user.kill_token();
+      navigate({
+        to: "/credentials",
+      });
+    };
+
+    asyncMethod();
+  }, []);
+
   return (
     <div className="snowPage">
-      <SnowDrawer />
-      <motion.div
-        className="pageContainer"
-        animate="visible"
-        initial="hidden"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
-        }}
-      >
+      <Suspense fallback={null}>
         <Outlet />
-      </motion.div>
+      </Suspense>
     </div>
   );
 };
 
-export default SnowPage;
+export default Snow;

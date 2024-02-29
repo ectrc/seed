@@ -4,6 +4,12 @@
   font-weight: 100 900;
 }
 
+@font-face {
+  font-family: "Source Sans";
+  src: url("/SourceSans3-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 300 800;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +18,7 @@
   min-width: 0;
 
   --font-body: "Noto Sans", sans-serif;
+  --font-header: "Source Sans", sans-serif;
 
   font-family: var(--font-body);
   font-weight: 400;
@@ -19,51 +26,69 @@
 }
 
 :root {
-  --c-background: #121417;
-  --c-frame: #1b1f23;
-  --c-frame-hover: #202328;
-  --c-shadow: #00000005;
-  --c-drawer: #191b1f;
-  --c-lib-drawer: #17191d;
-  --c-lib-drawer-hover: #1b1d21;
+  --background: #192e45;
+  --foreground: #294d73;
 
-  --t-active: #ffffff;
-  --t-almost-active: #c4c4c4;
-  --t-semi-active: #9ea0a5;
-  --t-inactive: #777f89;
+  --green: #44ad4d;
+  --green-dark: #3a9c43;
 
-  --vibrant: #6b9fff;
-  --vibrant-opacity: #6b9fff4b;
+  --red: #e34039;
+  --red-dark: #db433b;
 
-  --seasonColour: #f07833;
-  --red: #e26262;
+  --orange: #ea7633;
+  --orange-dark: #e06e2f;
+
+  --active: #ffffff;
+  --almost-active: #cdd5e6;
+  --semi-active: #677584;
 }
 
 html,
 body,
 #root {
-  background-color: var(--c-background);
-  color: var(--t-active);
+  background-color: var(--background);
+  color: var(--active);
   overflow: hidden;
 }
 
 a[href] {
-  color: var(--t-active);
+  color: var(--active);
   text-decoration: none;
 }
 
-code {
-  font-size: 0.85rem;
-  background-color: #00000015;
-  border-radius: 0.25rem;
-  margin-top: 0.5rem;
-  padding: 0.1rem 0.25rem;
-  word-break: break-all;
+.snowPage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
+  gap: 1rem;
 }
 
-.snowToast {
-  background-color: var(--c-drawer) !important;
-  box-shadow: none !important;
-  color: var(--t-almost-active) !important;
-  font-size: 1rem !important;
+.snowOverview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.snowOverviewHeader h4 {
+  font-size: 1.25rem;
+  font-family: var(--font-header);
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  color: var(--semi-active);
+}
+
+.snowOverviewHeader h4 strong {
+  color: var(--orange);
+  font-weight: 800;
+}
+
+.snowOverviewHeader p {
+  font-size: 1.75rem;
+  font-family: var(--font-header);
+  font-weight: 700;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  color: var(--almost-active);
 }

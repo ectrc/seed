@@ -1,10 +1,9 @@
-import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { useUserControl } from "src/state/user";
 import { open } from "@tauri-apps/api/shell";
 import client from "src/external/client";
-
-import "src/styles/pageCredentials.css";
-import { useUserControl } from "src/state/user";
+import { queryClient } from "src/app/app";
 
 const CredentialsPage = () => {
   const navigate = useNavigate();
@@ -21,9 +20,11 @@ const CredentialsPage = () => {
     if (!code.startsWith("auth:")) return;
 
     const token = code.split(":")[1];
+
     const player = await client.player(token);
     if (!player.ok) return console.error(player.error);
 
+    queryClient.setQueryData(["player"], player.data);
     userControl.new_token(token);
     window.location.hash = "";
     navigate({
@@ -39,22 +40,10 @@ const CredentialsPage = () => {
   }, []);
 
   return (
-    <div className="credentialsPage">
-      <div className="noAccountModal">
-        <header className="noAccountModalHeader">
-          <h1 className="noAccountModalTitle">Snow</h1>
-          <p className="noAccountModalText">
-            Authenticate yourself via Discord to gain access to in-game
-            services.
-          </p>
-        </header>
-
-        <div className="noAccountModalContent">
-          <button className="noAccountModalButton" onClick={handleContinue}>
-            Continue
-          </button>
-        </div>
-      </div>
+    <div className="snowPage">
+      <button className="default discord" onClick={handleContinue}>
+        Authenticate via Discord
+      </button>
     </div>
   );
 };

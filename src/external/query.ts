@@ -8,3 +8,11 @@ export const queryPerson = async (): Promise<Person> => {
 
   throw new Error(response.error);
 };
+
+export const queryStats = async (): Promise<LauncherStats> => {
+  const token = useUserControl.getState().access_token;
+  const response = await client.stats(token);
+  if (response.ok) return response.data;
+
+  throw new Error(response.error);
+};
