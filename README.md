@@ -1,6 +1,6 @@
 # Seed
 
-> A Fortnite launcher solution for [Snow](https://github.com/ectrc/snow).
+> A minimal Fortnite launcher solution for [Snow](https://github.com/ectrc/snow).
 
 ## Features
 
@@ -9,14 +9,16 @@
 
 | Screenshots                                                                                      |
 | ------------------------------------------------------------------------------------------------ |
-| ![image](https://github.com/ectrc/seed/assets/13946988/0ce9fb77-3f81-42b9-819e-b9a762e92f43) |
-| ![image](https://github.com/ectrc/seed/assets/13946988/a56687d0-294e-4a2e-ad44-290297545364) |
+| ![image](https://github.com/ectrc/seed/assets/13946988/30d418ef-fa54-4f15-8fa5-c34084e34545) |
+| ![image](https://github.com/ectrc/seed/assets/13946988/25d0b747-8d08-4dda-b7cc-167bfac91954) |
+| ![image](https://github.com/ectrc/seed/assets/13946988/db3de14e-42e5-4587-88e9-14fb0c0cd7d6) |
+| ![image](https://github.com/ectrc/seed/assets/13946988/6ec44715-2957-4f3a-877d-f6cfcef774ce) |
 
 ## How do I use this?
 
 - Install Rust [here](https://rustup.rs).
 - Install NodeJS [here](https://nodejs.org/en/download).
-- Clone the repository `git clone https://github.com/ectrc/rainfall.git`
+- Clone the repository `git clone https://github.com/ectrc/seed.git`
 - Install the dependencies `yarn install` (or `npm install`).
 - Launch in JIT mode `yarn tauri dev` (or `npm run tauri dev`).
 
