@@ -1,4 +1,4 @@
-# ![Rainfall Image](https://github.com/ectrc/rainfall/assets/13946988/098f09df-5f2f-4169-85ab-1421f64ed196)
+# Seed
 
 > A Fortnite launcher solution for [Snow](https://github.com/ectrc/snow).
 
@@ -9,10 +9,8 @@
 
 | Screenshots                                                                                      |
 | ------------------------------------------------------------------------------------------------ |
-| ![image](https://github.com/ectrc/rainfall/assets/13946988/be084a1a-b8b8-47e6-ab61-d3e2760ccfdb) |
-| ![image](https://github.com/ectrc/rainfall/assets/13946988/26445925-b6eb-41fa-9c56-a82d86e93c59) |
-| ![image](https://github.com/ectrc/rainfall/assets/13946988/f1139ac9-cec5-44c5-a11e-5f572796099c) |
-| ![image](https://github.com/ectrc/rainfall/assets/13946988/5b34a785-a47f-4a72-9372-e7b6dff534d7) |
+| ![image](https://github.com/ectrc/seed/assets/13946988/0ce9fb77-3f81-42b9-819e-b9a762e92f43) |
+| ![image](https://github.com/ectrc/seed/assets/13946988/a56687d0-294e-4a2e-ad44-290297545364) |
 
 ## How do I use this?
 
