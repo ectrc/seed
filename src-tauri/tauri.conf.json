@@ -1,0 +1,49 @@
+{
+  "build": {
+    "beforeDevCommand": "clear && yarn dev",
+    "beforeBuildCommand": "clear && yarn build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "seed",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": true,
+      "protocol": {
+        "all": true,
+        "assetScope": ["*/**"]
+      }
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "maximizable": false,
+        "resizable": true,
+        "title": "Seed",
+        "minWidth": 850,
+        "width": 950,
+        "minHeight": 500,
+        "height": 600,
+        "decorations": false
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "rocks.snows",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    }
+  }
+}

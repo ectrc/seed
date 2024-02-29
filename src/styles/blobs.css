@@ -1,0 +1,46 @@
+.blobs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blobs .blob {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  filter: blur(5rem);
+  border-radius: 50%;
+  opacity: 0.25;
+  transition: top 15s linear, left 15s linear;
+}
+
+.blobs .blob.green {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #4bd820 0%,
+    #0c01a5 100%
+  );
+}
+
+.blobs .blob.blue {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #7c7cd4 0%,
+    #0026ff 100%
+  );
+}
+
+.blobs .blob.red {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #ff9900 0%,
+    #ff0000 100%
+  );
+}

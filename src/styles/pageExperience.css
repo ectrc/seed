@@ -1,0 +1,51 @@
+.playerContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.45rem;
+  background-color: var(--c-frame);
+  margin-top: 3rem;
+}
+
+.playerHeader {
+  display: flex;
+  padding: 0.5rem;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 8rem;
+}
+
+.playerHeaderName {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--t-almost-active);
+}
+
+.playerHeaderName strong {
+  font-weight: 600;
+  color: var(--t-active);
+}
+
+.playerHeaderDescription {
+  font-size: 0.9rem;
+  color: var(--t-semi-active);
+}
+
+.playerHeaderDescription strong {
+  font-weight: 600;
+  color: var(--t-almost-active);
+}
+
+.playerAvatar {
+  width: 10rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: scaleX(-1);
+  background-color: var(--c-semi-active);
+}
+
+button.play {
+}

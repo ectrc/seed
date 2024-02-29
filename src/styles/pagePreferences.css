@@ -1,0 +1,3 @@
+.continueContainer.leave .continueContainerIcon svg {
+  fill: var(--red);
+}

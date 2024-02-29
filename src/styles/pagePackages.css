@@ -1,0 +1,10 @@
+.seasonText {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--seasonColour);
+  text-transform: uppercase;
+}
+
+.seasonText.normal {
+  font-size: unset;
+}

@@ -1,0 +1,39 @@
+.connectionsUserArea {
+  display: flex;
+  flex-direction: row;
+  gap: 0.35rem;
+  height: fit-content;
+  user-select: none;
+  border-radius: 0.35rem;
+  backdrop-filter: blur(1rem);
+  background-color: transparent;
+}
+
+.connectionsUserAreaIcon {
+  min-width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-image: linear-gradient(to right, #e755ec 0% 25%, #c847e2 100%);
+  background-size: 100% 100%;
+  background-clip: padding-box;
+}
+
+.connectionsUserInformation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+}
+
+.connectionsUserInformationName {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1rem;
+}
+
+.connectionsUserInformationText {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 0.75rem;
+  color: var(--t-inactive);
+}

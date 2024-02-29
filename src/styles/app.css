@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "Noto Sans";
+  src: url("/NotoSans-VariableFont_wdth,wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 0;
+  min-width: 0;
+
+  --font-body: "Noto Sans", sans-serif;
+
+  font-family: var(--font-body);
+  font-weight: 400;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root {
+  --c-background: #121417;
+  --c-frame: #1b1f23;
+  --c-frame-hover: #202328;
+  --c-shadow: #00000005;
+  --c-drawer: #191b1f;
+  --c-lib-drawer: #17191d;
+  --c-lib-drawer-hover: #1b1d21;
+
+  --t-active: #ffffff;
+  --t-almost-active: #c4c4c4;
+  --t-semi-active: #9ea0a5;
+  --t-inactive: #777f89;
+
+  --vibrant: #6b9fff;
+  --vibrant-opacity: #6b9fff4b;
+
+  --seasonColour: #f07833;
+  --red: #e26262;
+}
+
+html,
+body,
+#root {
+  background-color: var(--c-background);
+  color: var(--t-active);
+  overflow: hidden;
+}
+
+a[href] {
+  color: var(--t-active);
+  text-decoration: none;
+}
+
+code {
+  font-size: 0.85rem;
+  background-color: #00000015;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+  padding: 0.1rem 0.25rem;
+  word-break: break-all;
+}
+
+.snowToast {
+  background-color: var(--c-drawer) !important;
+  box-shadow: none !important;
+  color: var(--t-almost-active) !important;
+  font-size: 1rem !important;
+}
