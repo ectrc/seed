@@ -88,6 +88,12 @@ fn main() {
 
       Ok(())
     })
+    .on_window_event(move |event| match event.event() {
+      WindowEvent::Destroyed => {
+        carter::kill();
+      }
+      _ => {}
+    })
     .invoke_handler(tauri::generate_handler![hash, exists, experience, kill])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

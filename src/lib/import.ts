@@ -57,18 +57,16 @@ const importBuild = async (path: string) => {
   const exists = await fileExists(splash);
   if (!exists) return;
 
-  const version = versionLookup.get(hash);
-  if (!version) return;
-
-  if (version != "8.51") return;
+  // const version = versionLookup.get(hash);
+  // if (!version) return;
 
   libraryControl.add({
-    title: version ? `Fortnite ${version}` : "Unknown",
-    description: `Fortnite ${version || "Unknown"}`,
+    title: "Imported build",
+    description: "Imported build",
     posterPath: convertFileSrc(splash),
     binaryPath: binary,
     binaryHash: hash,
-    releaseVersion: version ? parseFloat(version) : 0,
+    releaseVersion: 0,
     path,
   });
 };
