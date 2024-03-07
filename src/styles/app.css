@@ -40,7 +40,7 @@
 
   --active: #ffffff;
   --almost-active: #cdd5e6;
-  --semi-active: #677584;
+  --semi-active: #8694a3;
 }
 
 html,
@@ -71,12 +71,12 @@ a[href] {
 }
 
 .snowOverviewHeader h4 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-family: var(--font-header);
   font-weight: 700;
   line-height: 1.25rem;
   text-transform: uppercase;
-  color: var(--semi-active);
+  color: var(--almost-active);
 }
 
 .snowOverviewHeader h4 strong {
@@ -91,4 +91,37 @@ a[href] {
   line-height: 1.75rem;
   text-transform: uppercase;
   color: var(--almost-active);
+}
+
+.snowUpdates {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.25rem;
+}
+
+.snowUpdates p {
+  font-size: 1.25rem;
+  font-family: var(--font-header);
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  color: var(--semi-active);
+}
+.snowUpdates ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.snowUpdates li {
+  /* display: flex;
+  align-items: center; */
+
+  margin-left: 0.8rem;
+  font-size: 0.95rem;
+  font-family: var(--font-header);
+  font-weight: 500;
+  line-height: 1.05rem;
+  color: var(--semi-active);
 }

@@ -1,15 +1,18 @@
 import { useLibraryControl } from "src/state/library";
 import { useUserControl } from "src/state/user";
-import { useConfigControl, LOADING_STATES } from "src/state/config";
+import { useStates, LOADING_STATES } from "src/state/state";
 import { importBuildFromDialog } from "src/lib/import";
 import { closeSnow, experienceSnow } from "src/lib/tauri";
 import { queryStats } from "src/external/query";
 import { useQuery } from "@tanstack/react-query";
 import client from "src/external/client";
 
+import { FaGithub } from "react-icons/fa6";
+import { open } from "@tauri-apps/api/shell";
+
 const Overview = () => {
   const library = useLibraryControl();
-  const installPath = library.getCurrentEntry();
+  const currentEntry = library.getCurrentEntry();
 
   const { data: launcherStats } = useQuery<LauncherStats>({
     queryKey: ["launcher"],
@@ -17,7 +20,7 @@ const Overview = () => {
     initialData: {
       PlayersOnline: 0,
       CurrentBuild: "0.0",
-      CurrentSeason: 0,
+      CurrentSeason: 8,
     },
     throwOnError: false,
     refetchInterval: 10000,
@@ -28,20 +31,38 @@ const Overview = () => {
       <div className="snowOverview">
         <header className="snowOverviewHeader">
           <h4>
-            Season <strong>{launcherStats.CurrentSeason}</strong>
+            SNOW Season <strong>{launcherStats.CurrentSeason}</strong>
           </h4>
-          <p>X marks the spot</p>
+          {/* <p>X marks the spot</p> */}
         </header>
+
+        <section className="snowUpdates">
+          <p>latest updates</p>
+          <ul>
+            <li>
+              Level & Battle Pass progression has been pushed to production.
+            </li>
+            <li>Improvements in MCP actions, so quicker response times!</li>
+          </ul>
+        </section>
       </div>
 
-      {!installPath ? <PathButton /> : <ExperienceSnow />}
+      {!currentEntry ? <PathButton /> : <ExperienceSnow />}
     </>
   );
 };
 
 const ExperienceSnow = () => {
+  const openLink = (href: string) => open(href);
+
   return (
     <>
+      <button
+        className="default"
+        onClick={() => openLink("https://github.com/ectrc/seed")}
+      >
+        <FaGithub /> View the source
+      </button>
       <PathButton alreadySet />
       <ExperienceButton />
     </>
@@ -53,14 +74,14 @@ type PathButtonProps = {
 };
 
 const PathButton = ({ alreadySet = false }: PathButtonProps) => {
-  const loaders = useConfigControl((s) => s.loaders);
+  const states = useStates((s) => s.states);
   const tag = alreadySet ? "Change" : "Set";
 
   return (
     <button
       className="default"
       onClick={importBuildFromDialog}
-      disabled={loaders["importing"] !== LOADING_STATES.AWAITING_ACTION}
+      disabled={states["importing"] !== LOADING_STATES.AWAITING_ACTION}
     >
       {tag} Fortnite Directory
     </button>
@@ -68,34 +89,40 @@ const PathButton = ({ alreadySet = false }: PathButtonProps) => {
 };
 
 const ExperienceButton = () => {
-  const config = useConfigControl();
+  const stateControl = useStates();
   const library = useLibraryControl();
   const token = useUserControl((s) => s.access_token);
 
   const handleExperience = async () => {
-    config.set_loader("launching", LOADING_STATES.ATTEMPTING_LOGIN);
+    stateControl.set_state("launching", LOADING_STATES.ATTEMPTING_LOGIN);
     const exchangeCode = await client.code(token);
     if (!exchangeCode.ok)
-      return config.set_loader("launching", LOADING_STATES.AWAITING_ACTION);
-    config.set_loader("launching", LOADING_STATES.FETCHING_BUILD);
+      return stateControl.set_state(
+        "launching",
+        LOADING_STATES.AWAITING_ACTION
+      );
+    stateControl.set_state("launching", LOADING_STATES.FETCHING_BUILD);
     const currentEntry = library.getCurrentEntry();
     if (!currentEntry)
-      return config.set_loader("launching", LOADING_STATES.AWAITING_ACTION);
-    config.set_loader("launching", LOADING_STATES.STARTING_PROCESS);
+      return stateControl.set_state(
+        "launching",
+        LOADING_STATES.AWAITING_ACTION
+      );
+    stateControl.set_state("launching", LOADING_STATES.STARTING_PROCESS);
     const stringOrBoolean = await experienceSnow(
       currentEntry.path,
       exchangeCode.data
     );
     if (typeof stringOrBoolean === "string") {
-      return config.set_loader("launching", LOADING_STATES.ERROR);
+      return stateControl.set_state("launching", LOADING_STATES.ERROR);
     }
     if (typeof stringOrBoolean === "boolean" && stringOrBoolean) {
-      return config.set_loader("launching", LOADING_STATES.INGAME);
+      return stateControl.set_state("launching", LOADING_STATES.INGAME);
     }
   };
 
   const handleClick = () => {
-    switch (config.loaders["launching"]) {
+    switch (stateControl.states["launching"]) {
       case LOADING_STATES.INGAME:
         closeSnow();
         break;
@@ -106,13 +133,13 @@ const ExperienceButton = () => {
         return;
     }
 
-    config.set_loader("launching", LOADING_STATES.AWAITING_ACTION);
+    stateControl.set_state("launching", LOADING_STATES.AWAITING_ACTION);
     closeSnow();
   };
 
   const disabled =
-    config.loaders["launching"] !== LOADING_STATES.INGAME &&
-    config.loaders["launching"] !== LOADING_STATES.AWAITING_ACTION;
+    stateControl.states["launching"] !== LOADING_STATES.INGAME &&
+    stateControl.states["launching"] !== LOADING_STATES.AWAITING_ACTION;
 
   const titleLookup = {
     [LOADING_STATES.ATTEMPTING_LOGIN]: "Getting Ready",
@@ -125,12 +152,14 @@ const ExperienceButton = () => {
   return (
     <button
       className={`default ${
-        config.loaders["launching"] === LOADING_STATES.INGAME ? "red" : "green"
+        stateControl.states["launching"] === LOADING_STATES.INGAME
+          ? "red"
+          : "green"
       }`}
       onClick={handleClick}
       disabled={disabled}
     >
-      {titleLookup[config.loaders["launching"]]}
+      {titleLookup[stateControl.states["launching"]]}
     </button>
   );
 };

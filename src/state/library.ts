@@ -10,6 +10,8 @@ type LibraryState = {
   getCurrentEntry: () => LibraryEntry | null;
 };
 
+// reason for multiple entries: I used to have a library of multiple versions but no point!
+
 export const useLibraryControl = create<LibraryState>()(
   persist(
     (set) => ({

@@ -1,6 +1,6 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useConfigControl } from "src/state/config";
+import { useStates } from "src/state/state";
 import { queryPerson, queryStats } from "src/external/query";
 
 import { HiArrowSmLeft } from "react-icons/hi";
@@ -8,7 +8,7 @@ import { FaSeedling, FaCircleUser } from "react-icons/fa6";
 import "src/styles/frame.css";
 
 const Frame = () => {
-  const fortniteStatus = useConfigControl((s) => s.loaders["launching"]);
+  const fortniteStatus = useStates((s) => s.states["launching"]);
   const className = `tauriFrame ${fortniteStatus}`;
 
   const { data: launcherStats, error } = useQuery<LauncherStats>({
