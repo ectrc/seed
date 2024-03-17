@@ -8,6 +8,9 @@ import Book from "src/components/book";
 const SUFFIX = ["JUMP INTO A GAME OF ", "GO DOMINATE IN ", "GIVE A SHOT AT "];
 const PLAYLISTS = ["Arena", "Solos", "Duos", "Squads"];
 
+const CHOSEN_SUFFIX = SUFFIX[Math.floor(Math.random() * SUFFIX.length)];
+const CHOSEN_PLAYLIST = PLAYLISTS[Math.floor(Math.random() * PLAYLISTS.length)];
+
 const Online = () => {
   const {
     data: snowDataReal,
@@ -35,10 +38,8 @@ const Online = () => {
           </header>
           <section className="snowUpdates">
             <p>
-              {SUFFIX[Math.floor(Math.random() * SUFFIX.length)]}
-              <strong>
-                {PLAYLISTS[Math.floor(Math.random() * PLAYLISTS.length)]}
-              </strong>
+              {CHOSEN_SUFFIX}
+              <strong>{CHOSEN_PLAYLIST}</strong>
             </p>
           </section>
         </div>

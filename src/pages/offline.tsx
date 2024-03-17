@@ -9,19 +9,21 @@ const Offline = () => {
   return (
     <div className="snowPage">
       <div className="snowOverview">
-        <header className="snowOverviewHeader">
-          <h4>
-            SNOW <strong>UNSECURE MODE</strong>
-          </h4>
-        </header>
-        <section className="snowUpdates">
-          {username && (
-            <p>
-              USING ACCOUNT <strong>{username}</strong>
-            </p>
-          )}
-          {!username && <p>NO DISPLAY NAME PROVIDED</p>}
-        </section>
+        <div>
+          <header className="snowOverviewHeader">
+            <h4>
+              SNOW <strong>UNSECURE MODE</strong>
+            </h4>
+          </header>
+          <section className="snowUpdates">
+            {username && (
+              <p>
+                USING ACCOUNT <strong>{username}</strong>
+              </p>
+            )}
+            {!username && <p>NO DISPLAY NAME PROVIDED</p>}
+          </section>
+        </div>
       </div>
 
       <button className="default" onClick={importBuildFromDialog}>
