@@ -2,10 +2,20 @@ import axios from "axios";
 import { discord } from "./discord";
 import { code, okay, player } from "./person";
 import { stats } from "./launcher";
+import { useConfigControl } from "src/state/config";
 
-export const axiosClient = axios.create({
-  baseURL: "https://snows.rocks",
+const localAxiosClient = axios.create({
+  baseURL: "http://127.0.0.1:3000",
 });
+
+const finalAxiosClient = axios.create({
+  baseURL: "https://retrac.site",
+});
+
+export const axiosClient = () =>
+  useConfigControl.getState().use_localhost
+    ? localAxiosClient
+    : finalAxiosClient;
 
 export const endpoints = {
   GET_DISCORD_ENDPOINT: "/snow/discord",
@@ -15,4 +25,6 @@ export const endpoints = {
   GET_LAUNCHER_STATS: "/snow/launcher",
 };
 
-export default { discord, player, okay, code, stats };
+const client = { discord, player, okay, code, stats };
+
+export default client;

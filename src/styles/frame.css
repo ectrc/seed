@@ -10,6 +10,7 @@
   flex-direction: column;
   background-color: var(--red);
   min-height: max-content;
+  background-color: rgb(25, 126, 194);
 }
 
 .tauriFrame.in_game {
@@ -46,6 +47,14 @@
   padding: 0.7rem 1rem;
   padding-top: 0.25rem;
   user-select: none;
+}
+
+.tauriFrameInformationSmol {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  padding-top: 0rem;
 }
 
 .tauriFrameInformation span {

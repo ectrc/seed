@@ -1,0 +1,184 @@
+.settings {
+  z-index: 100;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  padding: 1rem;
+  /* gap: 1rem; */
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+}
+
+.settings .fakeFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  gap: 1rem;
+  width: 100%;
+  height: 3rem;
+  background-color: #ffffff05;
+}
+
+.settings .fakeFrame s {
+  margin-left: auto;
+}
+
+.fakeFrame .fakeFrameAction {
+  all: unset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+.fakeFrame .fakeFrameAction.sml {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.fakeFrame .fakeFrameAction svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: var(--semi-active);
+}
+
+.fakeFrameAction.sml svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.fakeFrame .fakeFrameAction svg:hover {
+  fill: var(--almost-active);
+}
+
+.settings s {
+  margin-top: 2.5rem;
+}
+
+.settings h2 {
+  font-size: 1.75rem;
+  font-family: var(--font-header);
+  font-weight: 700;
+}
+
+.settings .settingsActions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  height: 100%;
+}
+
+.settings .settingsActions s {
+  margin-top: auto;
+}
+
+.toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.525rem 1rem;
+  margin-left: -1rem;
+  width: calc(100% + 2rem);
+  min-height: 3rem;
+  border: none;
+  cursor: pointer;
+  background-color: var(--foreground);
+}
+
+.toggle.noclick {
+  cursor: default;
+}
+
+.toggleInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: max-content;
+  width: 100%;
+}
+
+.toggle span {
+  font-family: var(--font-header);
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--active);
+}
+
+.toggleInfo p {
+  font-family: var(--font-header);
+  font-weight: 500;
+  font-size: 0.85rem;
+  line-height: 1rem;
+  text-align: left;
+  color: var(--nearly-active);
+}
+
+.toggle .toggleSwitch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.25rem;
+  margin-left: auto;
+  min-width: 3.2rem;
+  height: 2rem;
+  border-radius: 99rem;
+  background-color: var(--background);
+}
+
+.toggle .toggleSwitch .blob {
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 99rem;
+  background-color: var(--red);
+  transition: background-color 100ms;
+}
+
+.toggle .toggleSwitch .blob.active {
+  background-color: var(--green);
+}
+
+.toggleInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: -1rem;
+  margin-top: -1rem;
+  width: calc(100% + 2rem);
+  height: 3rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  font-family: var(--font-header);
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--active);
+  background-color: #0000001a;
+}
+
+.toggleInput::placeholder {
+  color: var(--semi-active);
+  font-weight: 500;
+}
+
+.credits {
+  font-family: var(--font-header);
+  font-weight: 500;
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 1rem;
+  color: var(--nearly-active);
+  user-select: none;
+}

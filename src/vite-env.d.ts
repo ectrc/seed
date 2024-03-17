@@ -96,6 +96,16 @@ type Ban = {
   Reason: string;
 };
 
+type SeasonStat = {
+  ID: string;
+  PersonID: string;
+  Season: number;
+  SeasonXP: number;
+  BookXP: number;
+  BookPurchased: boolean;
+  Hype: number;
+};
+
 type Person = {
   ID: string;
   DisplayName: string;
@@ -107,6 +117,8 @@ type Person = {
   Profile0Profile: Profile;
   CollectionsProfile: Profile;
   CreativeProfile: Profile;
+  CurrentSeasonStats: SeasonStat;
+  AllSeasonStats: SeasonStat[];
   BanHistory: Ban[];
   Discord: DiscordAccount;
   Relationships: Record<string, Relationship>;
@@ -129,4 +141,14 @@ type LauncherStats = {
   PlayersOnline: number;
   CurrentBuild: string;
   CurrentSeason: number;
+};
+
+type PersonResponse = {
+  snapshot: Person;
+  season: {
+    level: number;
+    xp: number;
+    bookLevel: number;
+    bookXp: number;
+  };
 };

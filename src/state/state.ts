@@ -3,6 +3,11 @@ import { create } from "zustand";
 type StateState = {
   states: Record<string, string>;
   set_state: (id: string, active: string) => void;
+
+  settings_page_active: boolean;
+  set_settings_page_active: (
+    active: boolean | ((prev: boolean) => boolean)
+  ) => void;
 };
 
 export const LOADING_STATES = {
@@ -29,5 +34,16 @@ export const useStates = create<StateState>((set) => ({
         [loader]: active,
       },
     }));
+  },
+  settings_page_active: false,
+  set_settings_page_active: (active) => {
+    if (typeof active === "function") {
+      set((state) => ({
+        settings_page_active: active(state.settings_page_active),
+      }));
+      return;
+    }
+
+    set({ settings_page_active: active });
   },
 }));

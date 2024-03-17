@@ -1,9 +1,11 @@
 import { AxiosError } from "axios";
 import { axiosClient, endpoints } from "./client";
 
-export const player = async (t: string): Promise<SnowResponse<Person>> => {
-  const response = await axiosClient
-    .get<Person>(endpoints.GET_PLAYER_ENDPOINT, {
+export const player = async (
+  t: string
+): Promise<SnowResponse<PersonResponse>> => {
+  const response = await axiosClient()
+    .get<PersonResponse>(endpoints.GET_PLAYER_ENDPOINT, {
       headers: {
         Authorization: t,
       },
@@ -26,7 +28,7 @@ export const player = async (t: string): Promise<SnowResponse<Person>> => {
 };
 
 export const okay = async (t: string): Promise<SnowResponse<string>> => {
-  const response = await axiosClient
+  const response = await axiosClient()
     .get<string>(endpoints.GET_PLAYER_OKAY_ENDPOINT, {
       headers: {
         Authorization: t,
@@ -50,7 +52,7 @@ export const okay = async (t: string): Promise<SnowResponse<string>> => {
 };
 
 export const code = async (t: string): Promise<SnowResponse<string>> => {
-  const response = await axiosClient
+  const response = await axiosClient()
     .post<string>(
       endpoints.POST_PLAYER_CODE_ENDPOINT,
       {},

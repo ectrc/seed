@@ -17,7 +17,7 @@
 - Install the dependencies `yarn install` (or `npm install`).
 - Launch in JIT mode `yarn tauri dev` (or `npm run tauri dev`).
 
-> Once Snow is deployed to [snows.rocks](https://snows.rocks), I will make a GitHub Action to autobuild this laucher so you can try it out without having to download and configure!
+> Once Snow is deployed to [retrac.site](https://retrac.site), I will make a GitHub Action to autobuild this laucher so you can try it out without having to download and configure!
 
 ## Disclaimer
 

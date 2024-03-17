@@ -10,10 +10,25 @@ export const fileExists = async (i: string) => {
   return result;
 };
 
-export const experienceSnow = async (i: string, c: string) => {
-  const result = await invoke<boolean>("experience", { i, c }).catch(
-    (s) => s as string
+export const experienceSnow = async (i: string, c: string, local: boolean) => {
+  await closeSnow();
+  const result = await invoke<boolean>("experience", { i, c, local }).catch(
+    (s) => {
+      console.error(s);
+      return s as string;
+    }
   );
+  return result;
+};
+
+export const experienceSnowDev = async (i: string, username: string) => {
+  const result = await invoke<boolean>("offline", { i, username }).catch(
+    (s) => {
+      console.error(s);
+      return s as string;
+    }
+  );
+
   return result;
 };
 

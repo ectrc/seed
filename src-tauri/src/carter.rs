@@ -1,16 +1,9 @@
 use sysinfo::System;
 use std::io::Write;
 use std::os::windows::process::CommandExt;
+use std::process::Stdio;
+use tauri::AppHandle;
 use futures_util::StreamExt;
-
-use winapi::shared::minwindef::FALSE;
-use winapi::um::handleapi::CloseHandle;
-use winapi::um::processthreadsapi::{OpenThread, SuspendThread};
-use winapi::um::winnt::HANDLE;
-use winapi::um::winnt::THREAD_SUSPEND_RESUME;
-use winapi::um::tlhelp32::{
-  CreateToolhelp32Snapshot, Thread32First, Thread32Next, TH32CS_SNAPTHREAD, THREADENTRY32,
-};
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
@@ -34,10 +27,27 @@ pub fn kill() {
       .spawn();
 
     if cmd.is_err() {
-      println!("Error: {:?}", cmd.err());
       return
     }
   }
+
+  std::thread::sleep(std::time::Duration::from_secs(1));  
+}
+
+pub fn search() -> u32 {
+  let mut pid = 0;
+  unsafe {
+    let tl = tasklist::Tasklist::new();
+
+    for task in tl {
+      if task.get_pname() == "FortniteClient-Win64-Shipping.exe" {
+        pid = task.get_pid();
+        break;
+      }
+    }
+  }
+
+  pid
 }
 
 async fn downloader(
@@ -76,58 +86,29 @@ pub async fn download(
   }
 }
 
-fn suspend(pid: u32) -> (u32, bool) {
-  unsafe {
-    let mut has_err = false;
-    let mut count: u32 = 0;
-    let te: &mut THREADENTRY32 = &mut std::mem::zeroed();
-    (*te).dwSize = std::mem::size_of::<THREADENTRY32>() as u32;
-    let snapshot: HANDLE = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+pub async fn launch_launcher(app: AppHandle) -> Result<bool, String> {
+  let resource_path = app.path_resolver()
+    .resolve_resource("resource/FortniteLauncher.exe")
+    .expect("failed to resolve resource");
 
-    if Thread32First(snapshot, te) == 1 {
-      loop {
-        if pid == (*te).th32OwnerProcessID {
-          let tid = (*te).th32ThreadID;
-          let thread: HANDLE = OpenThread(THREAD_SUSPEND_RESUME, FALSE, tid);
-          has_err |= SuspendThread(thread) as i32 == -1i32;
-          CloseHandle(thread);
-          count += 1;
-        }
+  let cmd = std::process::Command::new(resource_path)
+    .creation_flags(CREATE_NO_WINDOW)
+    .stdout(Stdio::piped())
+    .spawn();
 
-        if Thread32Next(snapshot, te) == 0 {
-          break;
-        }
-      }
-    }
-
-    CloseHandle(snapshot);
-
-    (count, has_err)
+  if cmd.is_err() {
+    println!("Failed to launch Fortnite Launcher {}", cmd.unwrap_err().to_string());
+    return Err("Failed to launch Fortnite Launcher".to_string());
   }
+
+  Ok(true)
 }
 
-pub async fn launch(
+pub async fn launch_game(
   path: &str,
   code: &str,
 ) -> Result<bool, String> {
   let base = std::path::PathBuf::from(path);
-
-  let mut launcher = base.clone();
-  launcher.push("FortniteGame\\Binaries\\Win64\\FortniteLauncher.exe");
-  let mut cwd = base.clone();
-  cwd.push("FortniteGame\\Binaries\\Win64");
-
-  let cmd = std::process::Command::new(launcher)
-    .current_dir(cwd)
-    .creation_flags(CREATE_NO_WINDOW)
-    .spawn();
-
-  if cmd.is_err() {
-    return Err(format!("Failed to launch '{}'", path));
-  }
-
-  suspend(cmd.unwrap().id());
-
   let fort_args = vec![
     "-epicapp=Fortnite",
     "-epicenv=Prod",
@@ -138,8 +119,7 @@ pub async fn launch(
     "-fltoken=24963ce04b575a5ca65526h0",
     "-caldera=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiYmU5ZGE1YzJmYmVhNDQwN2IyZjQwZWJhYWQ4NTlhZDQiLCJnZW5lcmF0ZWQiOjE2Mzg3MTcyNzgsImNhbGRlcmFHdWlkIjoiMzgxMGI4NjMtMmE2NS00NDU3LTliNTgtNGRhYjNiNDgyYTg2IiwiYWNQcm92aWRlciI6IkVhc3lBbnRpQ2hlYXQiLCJub3RlcyI6IiIsImZhbGxiYWNrIjpmYWxzZX0.VAWQB67RTxhiWOxx7DBjnzDnXyyEnX7OljJm-j2d88G_WgwQ9wrE6lwMEHZHjBd1ISJdUO1UVUqkfLdU5nofBQ",
     "-skippatchcheck",
-    "-AUTH_LOGIN=", code,
-    "-AUTH_TYPE=exchangecode",
+    "-noeac",
   ];
 
   let mut binary = base.clone();
@@ -147,10 +127,17 @@ pub async fn launch(
 
   let cmd = std::process::Command::new(binary)
     .creation_flags(CREATE_NO_WINDOW)
-    .args(&fort_args)
+    .args(fort_args)
+    .args(code.split(" "))
+    .stdout(Stdio::piped())
     .spawn();
 
   if cmd.is_err() {
+    return Err(format!("Failed to launch '{}'", path));
+  }
+
+  let result = cmd.unwrap().wait();
+  if result.is_err() {
     return Err(format!("Failed to launch '{}'", path));
   }
 

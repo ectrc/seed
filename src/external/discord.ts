@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { axiosClient, endpoints } from "./client";
 
 export const discord = async (): Promise<SnowResponse<string>> => {
-  const response = await axiosClient
+  const response = await axiosClient()
     .get<string>(endpoints.GET_DISCORD_ENDPOINT)
     .catch((e: AxiosError<ErrorResponse>) => {
       return e;

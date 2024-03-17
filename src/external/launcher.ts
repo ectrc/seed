@@ -4,7 +4,7 @@ import { axiosClient, endpoints } from "./client";
 export const stats = async (
   t: string
 ): Promise<SnowResponse<LauncherStats>> => {
-  const response = await axiosClient
+  const response = await axiosClient()
     .get<LauncherStats>(endpoints.GET_LAUNCHER_STATS, {
       headers: {
         Authorization: t,

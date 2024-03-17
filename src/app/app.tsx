@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import TauriListener from "src/components/listener";
 
 import { RouterProvider } from "@tanstack/react-router";
 import router from "src/app/router";
@@ -19,6 +20,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <TauriListener />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );

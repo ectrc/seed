@@ -10,6 +10,11 @@
   font-weight: 300 800;
 }
 
+@font-face {
+  font-family: "FontAwesome";
+  src: url("/FontAwesome-Font_icon.woff2") format("woff2");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -19,6 +24,7 @@
 
   --font-body: "Noto Sans", sans-serif;
   --font-header: "Source Sans", sans-serif;
+  --font-icon: "FontAwesome", sans-serif;
 
   font-family: var(--font-body);
   font-weight: 400;
@@ -28,6 +34,7 @@
 :root {
   --background: #192e45;
   --foreground: #294d73;
+  --moreground: #3a6a9f;
 
   --green: #44ad4d;
   --green-dark: #3a9c43;
@@ -40,6 +47,7 @@
 
   --active: #ffffff;
   --almost-active: #cdd5e6;
+  --nearly-active: #a9b9d3;
   --semi-active: #8694a3;
 }
 
@@ -66,6 +74,9 @@ a[href] {
 
 .snowOverview {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   width: 100%;
   height: 100%;
 }
@@ -81,6 +92,9 @@ a[href] {
 
 .snowOverviewHeader h4 strong {
   color: var(--orange);
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  line-height: 1.25rem;
   font-weight: 800;
 }
 
@@ -107,6 +121,16 @@ a[href] {
   text-transform: uppercase;
   color: var(--semi-active);
 }
+
+.snowUpdates p strong {
+  font-size: 1.25rem;
+  font-family: var(--font-header);
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  color: var(--almost-active);
+}
+
 .snowUpdates ul {
   display: flex;
   flex-direction: column;
@@ -115,9 +139,6 @@ a[href] {
 }
 
 .snowUpdates li {
-  /* display: flex;
-  align-items: center; */
-
   margin-left: 0.8rem;
   font-size: 0.95rem;
   font-family: var(--font-header);
