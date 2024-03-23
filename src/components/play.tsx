@@ -57,7 +57,7 @@ const PlaySnow = () => {
     if (!fortniteEntry) return "Invalid Installation";
     if (isFortniteRunning && oneSession) return "Fortnite is running";
     if (!username && type) return "Invalid Credentials";
-    return "Experience Snow";
+    return "Experience Retrac";
   };
 
   return (

@@ -3,9 +3,10 @@ import { useStates } from "src/state/state";
 import { useConfigControl } from "src/state/config";
 import { queryPerson, queryStats } from "src/external/query";
 import { Outlet } from "@tanstack/react-router";
+import { appWindow } from "@tauri-apps/api/window";
 import { AnimatePresence } from "framer-motion";
 
-import { FaSeedling, FaGear } from "react-icons/fa6";
+import { FaSeedling, FaGear, FaBomb } from "react-icons/fa6";
 import "src/styles/frame.css";
 import Settings from "../pages/settings";
 import Offline from "src/pages/offline";
@@ -45,6 +46,13 @@ const Frame = () => {
             <FaSeedling />
           </span>
           <s />
+          <button
+            data-tauri-drag-region
+            onClick={() => appWindow.close()}
+            className="tauriFrameAction"
+          >
+            <FaBomb />
+          </button>
           <button
             data-tauri-drag-region
             onClick={() => setSettingsOpen((s) => !s)}

@@ -21,11 +21,14 @@ const Online = () => {
     queryKey: ["launcher"],
     queryFn: queryStats,
     throwOnError: false,
-    refetchInterval: 10000,
   });
 
   const condition = error || isFetching || isLoading;
-  const snowData = condition ? null : snowDataReal;
+  const snowData = condition
+    ? snowDataReal !== undefined
+      ? snowDataReal
+      : null
+    : snowDataReal;
 
   return (
     <>

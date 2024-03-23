@@ -23,27 +23,15 @@ const Book = () => {
         player?.snapshot.CurrentSeasonStats.BookPurchased ? "purchased" : ""
       }`}
     >
-      {/* <div className="bookIconContainer">
-        <img
-          className="battleBookIcon"
-          src="/battlepass_free.png"
-          alt="Battle Pass Icon"
-        />
-      </div> */}
       <div className="tierInformation">
         <small>
           {player?.snapshot.CurrentSeasonStats.BookPurchased
-            ? "BATTLE"
-            : "FREE"}{" "}
+            ? "BATTLE "
+            : "FREE "}
           PASS
         </small>
         <p>
-          TIER{" "}
-          <strong>
-            {player?.snapshot.CurrentSeasonStats.BookPurchased
-              ? player.season.bookLevel
-              : 0}
-          </strong>
+          TIER <strong>{player ? player.season.bookLevel : "0"} </strong>
         </p>
       </div>
     </div>

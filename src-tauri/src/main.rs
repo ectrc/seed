@@ -31,7 +31,7 @@ async fn experience(i: String, c: &str, local: bool, app: AppHandle) -> Result<b
   let path = PathBuf::from(i);
 
   let mut dll_path = path.clone();
-  dll_path.push("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\GFSDK_Aftermath_Lib.x64.dll");
+  dll_path.push("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\snow_public.dll");
   while dll_path.exists() {
     if std::fs::remove_file(dll_path.clone()).is_ok() {
       break;
@@ -43,6 +43,21 @@ async fn experience(i: String, c: &str, local: bool, app: AppHandle) -> Result<b
   let file = if local { "snow_local.dll" } else { "snow_public.dll" };
   let lam = carter::download("https://cdn.snows.rocks", file, dll_path.clone().to_str().unwrap()).await;
   if lam.is_err() {
+    return Err("Could not download the file".to_string());
+  }
+
+  let mut nvidia_path = path.clone();
+  nvidia_path.push("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\snow_public.dll");
+  while nvidia_path.exists() {
+    if std::fs::remove_file(nvidia_path.clone()).is_ok() {
+      break;
+    }
+
+    std::thread::sleep(std::time::Duration::from_millis(100));
+  }
+
+  let nvidia = carter::download("https://cdn.snows.rocks", "GFSDK_Aftermath_Lib.x64.dll", nvidia_path.clone().to_str().unwrap()).await;
+  if nvidia.is_err() {
     return Err("Could not download the file".to_string());
   }
 
@@ -76,6 +91,7 @@ fn lam(window: Window) {
   std::thread::spawn(move || {
     loop {
       window.emit("fortnite_process_id", carter::search()).unwrap();
+      std::thread::sleep(std::time::Duration::from_millis(100));
     }
   });
 }

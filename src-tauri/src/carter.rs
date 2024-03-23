@@ -1,7 +1,6 @@
 use sysinfo::System;
 use std::io::Write;
 use std::os::windows::process::CommandExt;
-use std::process::Stdio;
 use tauri::AppHandle;
 use futures_util::StreamExt;
 
@@ -93,7 +92,7 @@ pub async fn launch_launcher(app: AppHandle) -> Result<bool, String> {
 
   let cmd = std::process::Command::new(resource_path)
     .creation_flags(CREATE_NO_WINDOW)
-    .stdout(Stdio::piped())
+    // .stdout(Stdio::piped())
     .spawn();
 
   if cmd.is_err() {
@@ -102,6 +101,17 @@ pub async fn launch_launcher(app: AppHandle) -> Result<bool, String> {
   }
 
   Ok(true)
+}
+
+pub async fn inject(library_path: String) -> bool {
+  let pid = search();
+  let res = dll_injector::inject_dll_load_library(pid, &library_path);
+
+  if res.is_err() {
+    return false;
+  }
+  
+  true
 }
 
 pub async fn launch_game(
@@ -129,12 +139,17 @@ pub async fn launch_game(
     .creation_flags(CREATE_NO_WINDOW)
     .args(fort_args)
     .args(code.split(" "))
-    .stdout(Stdio::piped())
+    // .stdout(Stdio::piped())
     .spawn();
 
   if cmd.is_err() {
     return Err(format!("Failed to launch '{}'", path));
   }
+
+  let mut dll_path = base.clone();
+  dll_path.push("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\snow_public.dll");
+
+  inject(dll_path.to_str().unwrap().to_string()).await;
 
   let result = cmd.unwrap().wait();
   if result.is_err() {
