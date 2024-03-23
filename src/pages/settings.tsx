@@ -3,8 +3,16 @@ import { useStates } from "src/state/state";
 import { useUserControl } from "src/state/user";
 import { useConfigControl } from "src/state/config";
 import { motion } from "framer-motion";
+import { message } from "@tauri-apps/api/dialog";
+import { exists } from "@tauri-apps/api/fs";
+import { closeSnow, fixSnow } from "src/lib/tauri";
+import * as path from "@tauri-apps/api/path";
 
-import { FaArrowRightFromBracket, FaCircleChevronDown } from "react-icons/fa6";
+import {
+  FaArrowRightFromBracket,
+  FaCapsules,
+  FaCircleChevronDown,
+} from "react-icons/fa6";
 import "src/styles/settings.css";
 import Toggle from "src/components/toggle";
 import Input from "../components/input";
@@ -21,6 +29,32 @@ const Settings = () => {
       to: "/credentials",
     });
     stateControl.set_settings_page_active(false);
+  };
+
+  const handleFixLauncher = async () => {
+    await closeSnow();
+    const installDir = await path.resourceDir();
+    const fileExists = await exists(
+      await path.join(installDir, "resource", "FortniteLauncher.exe")
+    );
+
+    if (fileExists) {
+      message("No issues found.", {
+        title: "Retrac Repair",
+        type: "info",
+      });
+      return;
+    }
+
+    const res = await fixSnow(await path.join(installDir, "resource"));
+    if (typeof res === "string") {
+      return;
+    }
+
+    message("Repaired damages files.", {
+      title: "Retrac Repair",
+      type: "info",
+    });
   };
 
   return (
@@ -41,6 +75,9 @@ const Settings = () => {
           <FaCircleChevronDown />
         </button>
         <s></s>
+        <button onClick={handleFixLauncher} className="fakeFrameAction sml">
+          <FaCapsules />
+        </button>
         {userControl.access_token && (
           <button onClick={handleDelete} className="fakeFrameAction sml">
             <FaArrowRightFromBracket />

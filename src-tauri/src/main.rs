@@ -47,7 +47,7 @@ async fn experience(i: String, c: &str, local: bool, app: AppHandle) -> Result<b
   }
 
   let mut nvidia_path = path.clone();
-  nvidia_path.push("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\snow_public.dll");
+  nvidia_path.push("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\GFSDK_Aftermath_Lib.x64.dll");
   while nvidia_path.exists() {
     if std::fs::remove_file(nvidia_path.clone()).is_ok() {
       break;
@@ -85,6 +85,19 @@ async fn offline(i: String, username: &str, app: AppHandle) -> Result<bool, Stri
 #[tauri::command]
 async fn kill() {
   carter::kill();
+}
+
+#[tauri::command]
+async fn fix(path: String) -> Result<bool, String> {
+  let mut path_real = PathBuf::from(path);
+  path_real.push("FortniteLauncher.exe");
+
+  let nvidia = carter::download("https://cdn.snows.rocks", "FortniteLauncher.exe", path_real.clone().to_str().unwrap()).await;
+  if nvidia.is_err() {
+    return Err("Could not download fortniet launcher".to_string());
+  }
+
+  Ok(true)
 }
 
 fn lam(window: Window) {
@@ -129,7 +142,7 @@ fn main() {
       WindowEvent::Resized(..) => std::thread::sleep(std::time::Duration::from_millis(1)),
       _ => {}
     })
-    .invoke_handler(tauri::generate_handler![hash, exists, experience, kill, offline])
+    .invoke_handler(tauri::generate_handler![hash, exists, experience, kill, offline, fix])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

@@ -90,6 +90,8 @@ pub async fn launch_launcher(app: AppHandle) -> Result<bool, String> {
     .resolve_resource("resource/FortniteLauncher.exe")
     .expect("failed to resolve resource");
 
+  println!("Launching Fortnite Launcher {}", resource_path.to_str().unwrap());
+
   let cmd = std::process::Command::new(resource_path)
     .creation_flags(CREATE_NO_WINDOW)
     // .stdout(Stdio::piped())

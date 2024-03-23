@@ -26,10 +26,6 @@ export const fileExists = async (i: string) => {
 };
 
 export const experienceSnow = async (i: string, c: string, local: boolean) => {
-  message("adhakdhjkasjkdhasjkhkdhasjkhdkashdjkh", {
-    title: "Retrac Error",
-    type: "error",
-  });
   await closeSnow();
   const result = await invoke<boolean>("experience", { i, c, local }).catch(
     (s) => {
@@ -61,6 +57,20 @@ export const experienceSnowDev = async (i: string, username: string) => {
 
 export const closeSnow = async () => {
   const result = await invoke<boolean>("kill").catch((s) => {
+    console.error(s);
+    message(s, {
+      title: "Retrac Error",
+      type: "error",
+    });
+    return s as string;
+  });
+  return result;
+};
+
+export const fixSnow = async (path: string) => {
+  const result = await invoke<boolean>("fix", {
+    path,
+  }).catch((s) => {
     console.error(s);
     message(s, {
       title: "Retrac Error",

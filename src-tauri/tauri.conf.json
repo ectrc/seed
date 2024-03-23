@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "Seed",
-    "version": "1.0.4"
+    "version": "1.0.5"
   },
   "tauri": {
     "allowlist": {
@@ -15,6 +15,10 @@
       "protocol": {
         "all": true,
         "assetScope": ["*/**"]
+      },
+      "fs": {
+        "all": true,
+        "scope": ["*/**"]
       }
     },
     "windows": [
