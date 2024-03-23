@@ -3274,7 +3274,7 @@ dependencies = [
 
 [[package]]
 name = "seed"
-version = "1.0.4"
+version = "1.0.5"
 dependencies = [
  "dll-injector",
  "futures-util",
